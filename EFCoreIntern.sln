@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OOP.EFCore.ConsoleApp", "OOP.EFCore.ConsoleApp\OOP.EFCore.ConsoleApp.csproj", "{775E663C-F849-4F36-A150-0222B1FC1DEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OOP.EFCore.ConsoleApp", "OOP.EFCore.ConsoleApp\OOP.EFCore.ConsoleApp.csproj", "{775E663C-F849-4F36-A150-0222B1FC1DEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EfScaffoldDbContextApp", "EfScaffoldDbContextApp\EfScaffoldDbContextApp.csproj", "{C26EE075-56EA-4A85-B345-48B4990657DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{775E663C-F849-4F36-A150-0222B1FC1DEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{775E663C-F849-4F36-A150-0222B1FC1DEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{775E663C-F849-4F36-A150-0222B1FC1DEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C26EE075-56EA-4A85-B345-48B4990657DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C26EE075-56EA-4A85-B345-48B4990657DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C26EE075-56EA-4A85-B345-48B4990657DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C26EE075-56EA-4A85-B345-48B4990657DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

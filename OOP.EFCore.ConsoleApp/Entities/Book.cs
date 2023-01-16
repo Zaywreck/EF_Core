@@ -30,5 +30,6 @@ namespace OOP.EFCore.ConsoleApp.Entities
             Title = title;
             Price = price;
         }
+        public Book() { }
     }
 }
