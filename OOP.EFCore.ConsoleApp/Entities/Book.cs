@@ -13,13 +13,22 @@ namespace OOP.EFCore.ConsoleApp.Entities
         public int BookId { get; set; }
         //[Required]
         //[MaxLength(50)]
-        public string Title { get; set; }
+        public string? Title { get; set; }
+        public decimal Price { get; set; }
         public DateTime CreatedDate { get; set; }
-
-        public Book(int bookId, string title)
+        // Foreign Key
+        public int? CategoryId { get; set; }
+        // simple navigation property
+        public Category? Category { get; set; }
+        // navigation property
+        public BookDetail? BookDetail { get; set; }
+        // collection navigation property
+        public ICollection<BookAuthor> BookAuthors { get; set; }
+        public Book(int bookId, string? title ,decimal price)
         {
             BookId = bookId;
             Title = title;
+            Price = price;
         }
     }
 }

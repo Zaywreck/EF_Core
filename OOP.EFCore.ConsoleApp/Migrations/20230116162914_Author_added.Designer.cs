@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OOP.EFCore.ConsoleApp.DAL_data_access_layer;
 
@@ -11,9 +12,11 @@ using OOP.EFCore.ConsoleApp.DAL_data_access_layer;
 namespace OOP.EFCore.ConsoleApp.Migrations
 {
     [DbContext(typeof(BookAppDbContext))]
-    partial class BookAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230116162914_Author_added")]
+    partial class Authoradded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,21 @@ namespace OOP.EFCore.ConsoleApp.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("AuthorBook", b =>
+                {
+                    b.Property<int>("AuthorID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BooksBookId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AuthorID", "BooksBookId");
+
+                    b.HasIndex("BooksBookId");
+
+                    b.ToTable("AuthorBook");
+                });
 
             modelBuilder.Entity("OOP.EFCore.ConsoleApp.Entities.Author", b =>
                 {
@@ -33,7 +51,7 @@ namespace OOP.EFCore.ConsoleApp.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 1, 16, 19, 40, 43, 756, DateTimeKind.Local).AddTicks(3351));
+                        .HasDefaultValue(new DateTime(2023, 1, 16, 19, 29, 13, 938, DateTimeKind.Local).AddTicks(2295));
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
@@ -83,7 +101,7 @@ namespace OOP.EFCore.ConsoleApp.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 1, 16, 19, 40, 43, 755, DateTimeKind.Local).AddTicks(9379));
+                        .HasDefaultValue(new DateTime(2023, 1, 16, 19, 29, 13, 937, DateTimeKind.Local).AddTicks(2553));
 
                     b.Property<decimal>("Price")
                         .ValueGeneratedOnAdd()
@@ -134,29 +152,6 @@ namespace OOP.EFCore.ConsoleApp.Migrations
                             Price = 20m,
                             Title = "Satranç"
                         });
-                });
-
-            modelBuilder.Entity("OOP.EFCore.ConsoleApp.Entities.BookAuthor", b =>
-                {
-                    b.Property<int>("BookAuthorId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookAuthorId"));
-
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BookAuthorId");
-
-                    b.HasIndex("AuthorId");
-
-                    b.HasIndex("BookId");
-
-                    b.ToTable("BookAuthors");
                 });
 
             modelBuilder.Entity("OOP.EFCore.ConsoleApp.Entities.BookDetail", b =>
@@ -236,6 +231,21 @@ namespace OOP.EFCore.ConsoleApp.Migrations
                         });
                 });
 
+            modelBuilder.Entity("AuthorBook", b =>
+                {
+                    b.HasOne("OOP.EFCore.ConsoleApp.Entities.Author", null)
+                        .WithMany()
+                        .HasForeignKey("AuthorID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OOP.EFCore.ConsoleApp.Entities.Book", null)
+                        .WithMany()
+                        .HasForeignKey("BooksBookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("OOP.EFCore.ConsoleApp.Entities.Book", b =>
                 {
                     b.HasOne("OOP.EFCore.ConsoleApp.Entities.Category", "Category")
@@ -244,25 +254,6 @@ namespace OOP.EFCore.ConsoleApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("OOP.EFCore.ConsoleApp.Entities.BookAuthor", b =>
-                {
-                    b.HasOne("OOP.EFCore.ConsoleApp.Entities.Author", "Author")
-                        .WithMany("BookAuthors")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("OOP.EFCore.ConsoleApp.Entities.Book", "Book")
-                        .WithMany("BookAuthors")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Author");
-
-                    b.Navigation("Book");
                 });
 
             modelBuilder.Entity("OOP.EFCore.ConsoleApp.Entities.BookDetail", b =>
@@ -276,15 +267,8 @@ namespace OOP.EFCore.ConsoleApp.Migrations
                     b.Navigation("Book");
                 });
 
-            modelBuilder.Entity("OOP.EFCore.ConsoleApp.Entities.Author", b =>
-                {
-                    b.Navigation("BookAuthors");
-                });
-
             modelBuilder.Entity("OOP.EFCore.ConsoleApp.Entities.Book", b =>
                 {
-                    b.Navigation("BookAuthors");
-
                     b.Navigation("BookDetail");
                 });
 

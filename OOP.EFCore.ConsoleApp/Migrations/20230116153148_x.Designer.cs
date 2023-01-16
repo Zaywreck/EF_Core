@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OOP.EFCore.ConsoleApp.DAL_data_access_layer;
 
@@ -11,9 +12,11 @@ using OOP.EFCore.ConsoleApp.DAL_data_access_layer;
 namespace OOP.EFCore.ConsoleApp.Migrations
 {
     [DbContext(typeof(BookAppDbContext))]
-    partial class BookAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230116153148_x")]
+    partial class x
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,53 +24,6 @@ namespace OOP.EFCore.ConsoleApp.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("OOP.EFCore.ConsoleApp.Entities.Author", b =>
-                {
-                    b.Property<int>("AuthorID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuthorID"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 1, 16, 19, 40, 43, 756, DateTimeKind.Local).AddTicks(3351));
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AuthorID");
-
-                    b.ToTable("Authors");
-
-                    b.HasData(
-                        new
-                        {
-                            AuthorID = 1,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Mert",
-                            LastName = "Gülle"
-                        },
-                        new
-                        {
-                            AuthorID = 2,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Sena Nur",
-                            LastName = "Gülle"
-                        },
-                        new
-                        {
-                            AuthorID = 3,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FirstName = "Bora Han",
-                            LastName = "Gülle"
-                        });
-                });
 
             modelBuilder.Entity("OOP.EFCore.ConsoleApp.Entities.Book", b =>
                 {
@@ -78,12 +34,13 @@ namespace OOP.EFCore.ConsoleApp.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookId"));
 
                     b.Property<int?>("CategoryId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 1, 16, 19, 40, 43, 755, DateTimeKind.Local).AddTicks(9379));
+                        .HasDefaultValue(new DateTime(2023, 1, 16, 18, 31, 48, 604, DateTimeKind.Local).AddTicks(2846));
 
                     b.Property<decimal>("Price")
                         .ValueGeneratedOnAdd()
@@ -136,29 +93,6 @@ namespace OOP.EFCore.ConsoleApp.Migrations
                         });
                 });
 
-            modelBuilder.Entity("OOP.EFCore.ConsoleApp.Entities.BookAuthor", b =>
-                {
-                    b.Property<int>("BookAuthorId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookAuthorId"));
-
-                    b.Property<int>("AuthorId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BookAuthorId");
-
-                    b.HasIndex("AuthorId");
-
-                    b.HasIndex("BookId");
-
-                    b.ToTable("BookAuthors");
-                });
-
             modelBuilder.Entity("OOP.EFCore.ConsoleApp.Entities.BookDetail", b =>
                 {
                     b.Property<int>("BookDetailId")
@@ -177,22 +111,17 @@ namespace OOP.EFCore.ConsoleApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ISSN")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("0000-0000-0000");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Year")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(2023);
+                        .HasColumnType("int");
 
                     b.HasKey("BookDetailId");
 
                     b.HasIndex("BookId")
                         .IsUnique();
 
-                    b.ToTable("BooksDetail");
+                    b.ToTable("BookDetail");
                 });
 
             modelBuilder.Entity("OOP.EFCore.ConsoleApp.Entities.Category", b =>
@@ -209,6 +138,7 @@ namespace OOP.EFCore.ConsoleApp.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)")
@@ -241,28 +171,10 @@ namespace OOP.EFCore.ConsoleApp.Migrations
                     b.HasOne("OOP.EFCore.ConsoleApp.Entities.Category", "Category")
                         .WithMany("Books")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("OOP.EFCore.ConsoleApp.Entities.BookAuthor", b =>
-                {
-                    b.HasOne("OOP.EFCore.ConsoleApp.Entities.Author", "Author")
-                        .WithMany("BookAuthors")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("OOP.EFCore.ConsoleApp.Entities.Book", "Book")
-                        .WithMany("BookAuthors")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Author");
-
-                    b.Navigation("Book");
                 });
 
             modelBuilder.Entity("OOP.EFCore.ConsoleApp.Entities.BookDetail", b =>
@@ -276,16 +188,10 @@ namespace OOP.EFCore.ConsoleApp.Migrations
                     b.Navigation("Book");
                 });
 
-            modelBuilder.Entity("OOP.EFCore.ConsoleApp.Entities.Author", b =>
-                {
-                    b.Navigation("BookAuthors");
-                });
-
             modelBuilder.Entity("OOP.EFCore.ConsoleApp.Entities.Book", b =>
                 {
-                    b.Navigation("BookAuthors");
-
-                    b.Navigation("BookDetail");
+                    b.Navigation("BookDetail")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("OOP.EFCore.ConsoleApp.Entities.Category", b =>
